@@ -1,4 +1,4 @@
-# Join t.me/dev_gagan
+#Github.com/mrinvisible7
 
 import asyncio, time, os
 
@@ -22,91 +22,9 @@ logger = logging.getLogger(__name__)
 logging.getLogger("pyrogram").setLevel(logging.INFO)
 logging.getLogger("telethon").setLevel(logging.INFO)
 
-user_chat_ids = {}
-
 def thumbnail(sender):
     return f'{sender}.jpg' if os.path.exists(f'{sender}.jpg') else None
       
-async def copy_message_with_chat_id(client, sender, chat_id, message_id):
-    # Get the user's set chat ID, if available; otherwise, use the original sender ID
-    target_chat_id = user_chat_ids.get(sender, sender)
-    try:
-        await client.copy_message(target_chat_id, chat_id, message_id)
-    except Exception as e:
-        error_message = f"Error occurred while sending message to chat ID {target_chat_id}: {str(e)}"
-        await client.send_message(sender, error_message)
-        await client.send_message(sender, f"Make Bot admin in your Channel - {target_chat_id} and restart the process after /cancel")
-
-async def send_message_with_chat_id(client, sender, message, parse_mode=None):
-    # Get the user's set chat ID, if available; otherwise, use the original sender ID
-    chat_id = user_chat_ids.get(sender, sender)
-    try:
-        await client.send_message(chat_id, message, parse_mode=parse_mode)
-    except Exception as e:
-        error_message = f"Error occurred while sending message to chat ID {chat_id}: {str(e)}"
-        await client.send_message(sender, error_message)
-        await client.send_message(sender, f"Make Bot admin in your Channel - {chat_id} and restart the process after /cancel")
-  
-@bot.on(events.NewMessage(incoming=True, pattern='/setchat'))
-async def set_chat_id(event):
-    # Extract chat ID from the message
-    try:
-        chat_id = int(event.raw_text.split(" ", 1)[1])
-        # Store user's chat ID
-        user_chat_ids[event.sender_id] = chat_id
-        await event.reply("Chat ID set successfully!")
-    except ValueError:
-        await event.reply("Invalid chat ID!")
-      
-async def send_video_with_chat_id(client, sender, path, caption, duration, hi, wi, thumb_path, upm):
-    # Get the user's set chat ID, if available; otherwise, use the original sender ID
-    chat_id = user_chat_ids.get(sender, sender)
-    try:
-        await client.send_video(
-            chat_id=chat_id,
-            video=path,
-            caption=caption,
-            supports_streaming=True,
-            duration=duration,
-            height=hi,
-            width=wi,
-            thumb=thumb_path,
-            progress=progress_for_pyrogram,
-            progress_args=(
-                client,
-                '**__Uploading: [Team SPY](https://t.me/dev_gagan)__**\n ',
-                upm,
-                time.time()
-            )
-        )
-    except Exception as e:
-        error_message = f"Error occurred while sending video to chat ID {chat_id}: {str(e)}"
-        await client.send_message(sender, error_message)
-        await client.send_message(sender, f"Make Bot admin in your Channel - {chat_id} and restart the process after /cancel")
-
-
-async def send_document_with_chat_id(client, sender, path, caption, thumb_path, upm):
-    # Get the user's set chat ID, if available; otherwise, use the original sender ID
-    chat_id = user_chat_ids.get(sender, sender)
-    try:
-        await client.send_document(
-            chat_id=chat_id,
-            document=path,
-            caption=caption,
-            thumb=thumb_path,
-            progress=progress_for_pyrogram,
-            progress_args=(
-                client,
-                '**__Uploading:__**\n**__Bot made by [Team SPY](https://t.me/dev_gagan)__**',
-                upm,
-                time.time()
-            )
-        )
-    except Exception as e:
-        error_message = f"Error occurred while sending document to chat ID {chat_id}: {str(e)}"
-        await client.send_message(sender, error_message)
-        await client.send_message(sender, f"Make Bot admin in your Channel - {chat_id} and restart the process after /cancel")
-
 async def check(userbot, client, link):
     logging.info(link)
     msg_id = 0
@@ -174,26 +92,26 @@ async def get_msg(userbot, client, sender, edit_id, msg_link, i, file_n):
                 a = b = True
                 edit = await client.edit_message_text(sender, edit_id, "Cloning.")
                 if '--'  in msg.text.html or '**' in msg.text.html or '__' in msg.text.html or '~~' in msg.text.html or '||' in msg.text.html or '```' in msg.text.html or '`' in msg.text.html:
-                    await send_message_with_chat_id(client, sender, msg.text.html, parse_mode=ParseMode.HTML)
+                    await client.send_message(sender, msg.text.html, parse_mode=ParseMode.HTML)
                     a = False
                 if '<b>' in msg.text.markdown or '<i>' in msg.text.markdown or '<em>' in msg.text.markdown  or '<u>' in msg.text.markdown or '<s>' in msg.text.markdown or '<spoiler>' in msg.text.markdown or '<a href=>' in msg.text.markdown or '<pre' in msg.text.markdown or '<code>' in msg.text.markdown or '<emoji' in msg.text.markdown:
-                    await send_message_with_chat_id(client, sender, msg.text.markdown, parse_mode=ParseMode.MARKDOWN)
+                    await client.send_message(sender, msg.text.markdown, parse_mode=ParseMode.MARKDOWN)
                     b = False
                 if a and b:
-                    await send_message_with_chat_id(client, sender, msg.text.markdown, parse_mode=ParseMode.MARKDOWN)
+                    await client.send_message(sender, msg.text.markdown, parse_mode=ParseMode.MARKDOWN)
                 await edit.delete()
                 return None
             if not msg.media and msg.text:
                 a = b = True
                 edit = await client.edit_message_text(sender, edit_id, "Cloning.")
                 if '--'  in msg.text.html or '**' in msg.text.html or '__' in msg.text.html or '~~' in msg.text.html or '||' in msg.text.html or '```' in msg.text.html or '`' in msg.text.html:
-                    await send_message_with_chat_id(client, sender, msg.text.html, parse_mode=ParseMode.HTML)
+                    await client.send_message(sender, msg.text.html, parse_mode=ParseMode.HTML)
                     a = False
                 if '<b>' in msg.text.markdown or '<i>' in msg.text.markdown or '<em>' in msg.text.markdown  or '<u>' in msg.text.markdown or '<s>' in msg.text.markdown or '<spoiler>' in msg.text.markdown or '<a href=>' in msg.text.markdown or '<pre' in msg.text.markdown or '<code>' in msg.text.markdown or '<emoji' in msg.text.markdown:
-                    await send_message_with_chat_id(client, sender, msg.text.markdown, parse_mode=ParseMode.MARKDOWN)
+                    await client.send_message(sender, msg.text.markdown, parse_mode=ParseMode.MARKDOWN)
                     b = False
                 if a and b:
-                    await send_message_with_chat_id(client, sender, msg.text.markdown, parse_mode=ParseMode.MARKDOWN)
+                    await client.send_message(sender, msg.text.markdown, parse_mode=ParseMode.MARKDOWN)
                 
                 '''await client.send_message(sender, msg.text.html, parse_mode = 'html')
                    await client.send_message(sender, msg.text.html, parse_mode = 'md')
@@ -215,21 +133,21 @@ async def get_msg(userbot, client, sender, edit_id, msg_link, i, file_n):
                 progress=progress_for_pyrogram,
                 progress_args=(
                     client,
-                    "**__Unrestricting__: __[Team SPY](https://t.me/dev_gagan)__**\n ",
+                    "**DOWNLOADING:**\n**bot made by Mr. Invisible**",
                     edit,
                     time.time()
                 )
-            )  
-          
+            )
             path = file
+            #await edit.edit('Preparing to Upload!')
             await edit.delete()
-            upm = await client.send_message(sender, '__Preparing to Upload!__')
+            upm = await client.send_message(sender, 'Preparing to Upload!')
             
             caption = str(file)
             if msg.caption is not None:
                 caption = msg.caption
-            if str(file).split(".")[-1] in ['mkv', 'mp4', 'webm', 'mpe4', 'mpeg', 'ts', 'avi', 'flv', 'org']:
-                if str(file).split(".")[-1] in ['webm', 'mkv', 'mpe4', 'mpeg', 'ts', 'avi', 'flv', 'org']:
+            if str(file).split(".")[-1] in ['mkv', 'mp4', 'webm', 'mpe4', 'mpeg']:
+                if str(file).split(".")[-1] in ['webm', 'mkv', 'mpe4', 'mpeg']:
                     path = str(file).split(".")[0] + ".mp4"
                     os.rename(file, path) 
                     file = str(file).split(".")[0] + ".mp4"
@@ -251,13 +169,28 @@ async def get_msg(userbot, client, sender, edit_id, msg_link, i, file_n):
                     os.rename(file, path)
                     file = path
                 try:
-                    thumb_path =thumbnail(sender)
+                    thumb_path = await screenshot(file, duration, sender)
                 except Exception as e:
                     logging.info(e)
                     thumb_path = None
-                
-                caption = f"{msg.caption}"
-                await send_video_with_chat_id(client, sender, path, caption, duration, hi, wi, thumb_path, upm)
+                caption = msg.caption if msg.caption is not None else str(file).split("/")[-1]
+                await client.send_video(
+                    chat_id=sender,
+                    video=path,
+                    caption=caption,
+                    supports_streaming=True,
+                    duration=duration,
+                    height=hi,
+                    width=wi,
+                    thumb=thumb_path,
+                    progress=progress_for_pyrogram,
+                    progress_args=(
+                        client,
+                        '**UPLOADING:**\n**bot made by Mr. Invisible**',
+                        upm,
+                        time.time()
+                    )
+                )
             elif str(file).split(".")[-1] in ['jpg', 'jpeg', 'png', 'webp']:
                 if file_n != '':
                     #path = ''
@@ -270,8 +203,10 @@ async def get_msg(userbot, client, sender, edit_id, msg_link, i, file_n):
                     file = path
 
                 
-                caption = f"{msg.caption}"
-                await upm.edit("__Uploading photo...__")
+                
+
+                caption = msg.caption if msg.caption is not None else str(file).split("/")[-1]
+                await upm.edit("Uploading photo.")
 
                 await bot.send_file(sender, path, caption=caption)
             else:
@@ -285,9 +220,20 @@ async def get_msg(userbot, client, sender, edit_id, msg_link, i, file_n):
                     os.rename(file, path)
                     file = path
                 thumb_path=thumbnail(sender)
-                
-                caption = f"{msg.caption}"
-                await send_document_with_chat_id(client, sender, path, caption, thumb_path, upm)
+                caption = msg.caption if msg.caption is not None else str(file).split("/")[-1]
+                await client.send_document(
+                    sender,
+                    path, 
+                    caption=caption,
+                    thumb=thumb_path,
+                    progress=progress_for_pyrogram,
+                    progress_args=(
+                        client,
+                        '**UPLOADING:**\n**bot made by Mr. Invisible**',
+                        upm,
+                        time.time()
+                    )
+                )
             os.remove(file)
             await upm.delete()
             return None
@@ -297,7 +243,7 @@ async def get_msg(userbot, client, sender, edit_id, msg_link, i, file_n):
     else:
         edit = await client.edit_message_text(sender, edit_id, "Cloning.")
         chat =  msg_link.split("/")[-2]
-        await copy_message_with_chat_id(client, sender, chat, msg_id)
+        await client.copy_message(int(sender), chat, msg_id)
         await edit.delete()
         return None   
  
