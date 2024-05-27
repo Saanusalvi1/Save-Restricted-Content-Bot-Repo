@@ -25,8 +25,8 @@ logging.getLogger("telethon").setLevel(logging.INFO)
 user_chat_ids = {}
 
 def thumbnail(sender):
-    return f'{sender}.jpg' if os.path.exists(f'{sender}.jpg')'
-
+    return f'{sender}.jpg' if os.path.exists(f'{sender}.jpg') else None
+      
 async def copy_message_with_chat_id(client, sender, chat_id, message_id):
     # Get the user's set chat ID, if available; otherwise, use the original sender ID
     target_chat_id = user_chat_ids.get(sender, sender)
